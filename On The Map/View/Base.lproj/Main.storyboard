@@ -128,8 +128,8 @@
                                     <action selector="loginWithFacebook:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XMu-ZK-ooq"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="umm-EY-ZS1">
-                                <rect key="frame" x="188.5" y="620" width="37" height="37"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="umm-EY-ZS1">
+                                <rect key="frame" x="197" y="620" width="20" height="20"/>
                                 <color key="color" systemColor="systemBackgroundColor"/>
                             </activityIndicatorView>
                         </subviews>
@@ -370,12 +370,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bSQ-ax-ZPx">
+                            <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bSQ-ax-ZPx">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                                 <connections>
                                     <outlet property="delegate" destination="ql4-ak-dul" id="4Wf-Ck-x6C"/>
                                 </connections>
                             </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="lOG-q7-SOm" userLabel="Loading Activity Indicator">
+                                <rect key="frame" x="197" y="352.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="EIz-hO-gw0" userLabel="Refresh Activity Indicator">
+                                <rect key="frame" x="197" y="30" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="D10-hc-oz8"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -383,14 +389,20 @@
                         <constraints>
                             <constraint firstItem="bSQ-ax-ZPx" firstAttribute="trailing" secondItem="D10-hc-oz8" secondAttribute="trailing" id="0sb-CO-TCy"/>
                             <constraint firstItem="bSQ-ax-ZPx" firstAttribute="bottom" secondItem="D10-hc-oz8" secondAttribute="bottom" id="LKA-qS-r5G"/>
+                            <constraint firstItem="lOG-q7-SOm" firstAttribute="centerX" secondItem="D10-hc-oz8" secondAttribute="centerX" id="Rv6-sb-gOX"/>
+                            <constraint firstItem="lOG-q7-SOm" firstAttribute="centerY" secondItem="D10-hc-oz8" secondAttribute="centerY" id="XTc-YI-XFu"/>
+                            <constraint firstItem="EIz-hO-gw0" firstAttribute="top" secondItem="D10-hc-oz8" secondAttribute="top" constant="30" id="Y1L-Qi-IyO"/>
                             <constraint firstItem="bSQ-ax-ZPx" firstAttribute="top" secondItem="D10-hc-oz8" secondAttribute="top" id="epo-eZ-OPN"/>
                             <constraint firstItem="bSQ-ax-ZPx" firstAttribute="leading" secondItem="aUB-9T-tL1" secondAttribute="leading" id="hBK-aK-QXs"/>
+                            <constraint firstItem="EIz-hO-gw0" firstAttribute="centerX" secondItem="D10-hc-oz8" secondAttribute="centerX" id="kNK-Bc-LNV"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="icon_mapview-selected" id="iGA-I5-ljN"/>
                     <navigationItem key="navigationItem" id="0yt-AX-9hm"/>
                     <connections>
+                        <outlet property="loadingIndicator" destination="lOG-q7-SOm" id="Vpr-QZ-ljy"/>
                         <outlet property="mapView" destination="bSQ-ax-ZPx" id="vnQ-KV-1rP"/>
+                        <outlet property="refreshIndicator" destination="EIz-hO-gw0" id="vHA-VM-t3v"/>
                         <segue destination="ATy-mz-k2l" kind="presentation" identifier="InfoPostingScreen" modalPresentationStyle="fullScreen" id="LAV-S2-gBo"/>
                     </connections>
                 </viewController>

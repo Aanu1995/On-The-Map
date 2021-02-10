@@ -28,9 +28,9 @@ class TabbedTableViewCell: UITableViewCell {
     }
 
     
-    func configure(title: String, subTitle: String, showDivider: Bool){
-        self.titleLabelView.text = title
-        self.subTitleLabelView.text = subTitle
+    func configure(info: InformationModel, showDivider: Bool){
+        self.titleLabelView.text = "\(info.firstName) \(info.lastName)"
+        self.subTitleLabelView.text = info.mediaURL
         self.divider.isHidden = !showDivider
     }
 }

@@ -26,6 +26,10 @@
 		CEBA56EC25CC459000582E1A /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA56EB25CC459000582E1A /* Validation.swift */; };
 		CEBA56EF25CC4A3900582E1A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA56EE25CC4A3900582E1A /* MapViewController.swift */; };
 		CEBA56F225CC4A5200582E1A /* TableTabbedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA56F125CC4A5200582E1A /* TableTabbedViewController.swift */; };
+		CEE73B6B25D414340035C9F1 /* StudentInformationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE73B6A25D414340035C9F1 /* StudentInformationClient.swift */; };
+		CEE73B6F25D416BB0035C9F1 /* StudentInformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE73B6E25D416BB0035C9F1 /* StudentInformationModel.swift */; };
+		CEE73B7325D41DAB0035C9F1 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE73B7225D41DAB0035C9F1 /* StudentInformation.swift */; };
+		CEE73B7825D43DAC0035C9F1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE73B7725D43DAC0035C9F1 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +55,10 @@
 		CEBA56EB25CC459000582E1A /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		CEBA56EE25CC4A3900582E1A /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		CEBA56F125CC4A5200582E1A /* TableTabbedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTabbedViewController.swift; sourceTree = "<group>"; };
+		CEE73B6A25D414340035C9F1 /* StudentInformationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformationClient.swift; sourceTree = "<group>"; };
+		CEE73B6E25D416BB0035C9F1 /* StudentInformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformationModel.swift; sourceTree = "<group>"; };
+		CEE73B7225D41DAB0035C9F1 /* StudentInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
+		CEE73B7725D43DAC0035C9F1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E59A2DB2A7AD11535221DF09 /* Pods-On The Map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-On The Map.debug.xcconfig"; path = "Target Support Files/Pods-On The Map/Pods-On The Map.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,6 +149,7 @@
 		CE6670F925D2CC3B00C48C15 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEE73B7125D41D7C0035C9F1 /* Data */,
 				CE66710225D2EBAD00C48C15 /* Requests */,
 				CE6670FA25D2CCA400C48C15 /* Client */,
 			);
@@ -152,6 +161,7 @@
 			children = (
 				CE6670FB25D2CCC300C48C15 /* Authentication.swift */,
 				CE66710725D2F15E00C48C15 /* Request.swift */,
+				CEE73B6A25D414340035C9F1 /* StudentInformationClient.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -160,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				CE66710325D2EC0900C48C15 /* Session.swift */,
+				CEE73B6E25D416BB0035C9F1 /* StudentInformationModel.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -171,8 +182,17 @@
 				CEBA56E825CC3C6600582E1A /* ErrorMessage.swift */,
 				CEBA56EB25CC459000582E1A /* Validation.swift */,
 				CE6670FF25D2DC8D00C48C15 /* CustomError.swift */,
+				CEE73B7725D43DAC0035C9F1 /* Constants.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		CEE73B7125D41D7C0035C9F1 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				CEE73B7225D41DAB0035C9F1 /* StudentInformation.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,8 +313,11 @@
 				CE1DC44E25CA861800E6A451 /* LoginViewController.swift in Sources */,
 				CEBA56E525CC369B00582E1A /* HelperFunction.swift in Sources */,
 				CEBA56E925CC3C6600582E1A /* ErrorMessage.swift in Sources */,
+				CEE73B6B25D414340035C9F1 /* StudentInformationClient.swift in Sources */,
 				CEBA56F225CC4A5200582E1A /* TableTabbedViewController.swift in Sources */,
 				CE1DC44A25CA861800E6A451 /* AppDelegate.swift in Sources */,
+				CEE73B6F25D416BB0035C9F1 /* StudentInformationModel.swift in Sources */,
+				CEE73B7325D41DAB0035C9F1 /* StudentInformation.swift in Sources */,
 				CE66710025D2DC8D00C48C15 /* CustomError.swift in Sources */,
 				CEB4B18A25CD82AF000B634F /* TabbedTableViewCell.swift in Sources */,
 				CE66710425D2EC0900C48C15 /* Session.swift in Sources */,
@@ -304,6 +327,7 @@
 				CE66710825D2F15E00C48C15 /* Request.swift in Sources */,
 				CEBA56EF25CC4A3900582E1A /* MapViewController.swift in Sources */,
 				CE6670FC25D2CCC300C48C15 /* Authentication.swift in Sources */,
+				CEE73B7825D43DAC0035C9F1 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
