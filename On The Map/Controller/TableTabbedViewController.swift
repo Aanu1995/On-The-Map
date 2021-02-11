@@ -22,32 +22,41 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        studentInfoList = StudentInformation.studentLocationList
+        configureNavBar(navigationItem: self.navigationItem, logoutSelector: #selector(self.logout), locationSelector: #selector(self.addLocation), refreshSelector: #selector(self.refresh))
+        
+        configureRefreshIndicator()
         
         // notification observer update data when called
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
         
-        configureNavBar(navigationItem: self.navigationItem, logoutSelector: #selector(self.logout), locationSelector: #selector(self.addLocation), refreshSelector: #selector(self.refresh))
-        
         self.tableView.register(TabbedTableViewCell.nib(), forCellReuseIdentifier: TabbedTableViewCell.identifier)
+        
+        studentInfoList = StudentInformation.studentLocationList
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func updateData() {
+    func updateStudentLocation(results: Any?, error: Error?) {
+        DispatchQueue.main.async {
+            if let error = error {
+                self.present(self.errorMessage(title: "Error", message: error.localizedDescription), animated: true)
+            }
+            self.tableView.refreshControl?.endRefreshing()
+          }
+    }
+    
+    @objc private func updateData() {
         studentInfoList = StudentInformation.studentLocationList
         tableView.reloadData()
     }
     
-    
-    
-    @objc func addLocation() {
-        performSegue(withIdentifier: "InfoPostingScreen", sender: nil)
+    @objc private func addLocation() {
+        performSegue(withIdentifier: Constants.infoPostingScreen, sender: nil)
     }
     
-    @objc func logout() {
+    @objc private func logout() {
         authService.logout { (error) in
             guard let error = error else {
                return self.dismiss(animated: true, completion: nil)
@@ -56,16 +65,14 @@ class TableTabbedViewController: UIViewController, HelperFunction {
         }
     }
     
-    @objc func refresh() {
+    @objc private func refresh() {
         studentLocationService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
-    func updateStudentLocation(results: Any?, error: Error?) {
-        if let error = error {
-            self.present(self.errorMessage(title: "Error", message: error.localizedDescription), animated: true)
-        }
+    private func configureRefreshIndicator(){
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
     }
-
 }
 
 
@@ -86,7 +93,7 @@ extension TableTabbedViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let url = URL(string: studentInfoList[indexPath.row].mediaURL)!
+        let url = studentInfoList[indexPath.row].url
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }

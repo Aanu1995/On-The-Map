@@ -16,10 +16,12 @@ class MapViewController: UIViewController, HelperFunction{
     @IBOutlet weak var mapView: MKMapView!
     
     // MARK: Properties
-    
-    let locationManager = CLLocationManager()
+
     let authService = Authentication()
     let studentLocationService = StudentLocationClient()
+    var studentInfoList: [InformationModel] = []
+    
+    var currentMediaURL: String = ""
     
     
     override func viewDidLoad() {
@@ -38,22 +40,32 @@ class MapViewController: UIViewController, HelperFunction{
         NotificationCenter.default.removeObserver(self)
     }
     
-    func updateStudentLocation(results: Any?, error: Error?) {
+    private func updateStudentLocation(results: Any?, error: Error?) {
         fetchingData(false)
         if let error = error {
             self.present(self.errorMessage(title: "Error", message: error.localizedDescription), animated: true)
         }
     }
     
-    @objc func updateData() {
-        
+    @objc private func updateData() {
+        studentInfoList = StudentInformation.studentLocationList
+        for info in studentInfoList {
+            let annotation = MKPointAnnotation()
+            annotation.title = "\(info.firstName) \(info.lastName)"
+            annotation.subtitle = info.mediaURL
+            annotation.coordinate = CLLocationCoordinate2D(latitude: info.latitude, longitude: info.longitude)
+            
+            mapView.addAnnotation(annotation)
+        }
+        print("reloaded")
+        mapView.reloadInputViews()
     }
     
-    @objc func addLocation() {
-        performSegue(withIdentifier: "InfoPostingScreen", sender: nil)
+    @objc private func addLocation() {
+        performSegue(withIdentifier: Constants.infoPostingScreen, sender: nil)
     }
     
-    @objc func logout() {
+    @objc private func logout() {
         authService.logout { (error) in
             guard let error = error else {
                return self.dismiss(animated: true, completion: nil)
@@ -62,12 +74,12 @@ class MapViewController: UIViewController, HelperFunction{
         }
     }
     
-    @objc func refresh() {
+    @objc private func refresh() {
         refreshIndicator.startAnimating()
         studentLocationService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
-    func fetchingData(_ isFetching: Bool){
+    private func fetchingData(_ isFetching: Bool){
         if isFetching {
             loadingIndicator.startAnimating()
         }else {
@@ -76,5 +88,36 @@ class MapViewController: UIViewController, HelperFunction{
         }
         
         mapView.isHidden = isFetching
+    }
+    
+}
+
+extension MapViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation is MKPointAnnotation else { return nil }
+
+        let identifier = "Annotation"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        currentMediaURL = (view.annotation!.subtitle ?? "") ?? ""
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.onCalloutTapped))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func onCalloutTapped() {
+        let url = URL(string: currentMediaURL.replacingOccurrences(of: " ", with: "%20"))!
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

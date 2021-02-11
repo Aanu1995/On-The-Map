@@ -17,6 +17,9 @@ struct InformationModel: Codable {
     let longitude: Double
     let latitude: Double
     let mediaURL: String
+    var url: URL {
+        return URL(string: self.mediaURL.replacingOccurrences(of: " ", with: "%20"))!
+    }
     let mapString: String
     let createdAt: String
     let updatedAt: String

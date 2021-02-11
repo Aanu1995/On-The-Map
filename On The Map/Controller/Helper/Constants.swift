@@ -9,4 +9,8 @@ import Foundation
 
 class Constants {
     static let fetchNotifierIdentifier = "fetchStudentInformation"
+    
+    
+    // Segue identifiers
+    static let infoPostingScreen = "InfoPostingScreen"
 }
