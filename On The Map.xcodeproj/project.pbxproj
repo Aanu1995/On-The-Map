@@ -14,6 +14,7 @@
 		CE1DC45125CA861800E6A451 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1DC44F25CA861800E6A451 /* Main.storyboard */; };
 		CE1DC45325CA861A00E6A451 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE1DC45225CA861A00E6A451 /* Assets.xcassets */; };
 		CE1DC45625CA861A00E6A451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1DC45425CA861A00E6A451 /* LaunchScreen.storyboard */; };
+		CE25476125D6BF930095E90A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25476025D6BF930095E90A /* User.swift */; };
 		CE2CCAD325CFEB9E005A49E8 /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2CCAD225CFEB9E005A49E8 /* InformationPostingViewController.swift */; };
 		CE6670FC25D2CCC300C48C15 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6670FB25D2CCC300C48C15 /* Authentication.swift */; };
 		CE66710025D2DC8D00C48C15 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6670FF25D2DC8D00C48C15 /* CustomError.swift */; };
@@ -43,6 +44,7 @@
 		CE1DC45225CA861A00E6A451 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE1DC45525CA861A00E6A451 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE1DC45725CA861A00E6A451 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE25476025D6BF930095E90A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CE2CCAD225CFEB9E005A49E8 /* InformationPostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
 		CE6670FB25D2CCC300C48C15 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 		CE6670FF25D2DC8D00C48C15 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				CE66710325D2EC0900C48C15 /* Session.swift */,
 				CEE73B6E25D416BB0035C9F1 /* StudentInformationModel.swift */,
+				CE25476025D6BF930095E90A /* User.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				CEBA56EF25CC4A3900582E1A /* MapViewController.swift in Sources */,
 				CE6670FC25D2CCC300C48C15 /* Authentication.swift in Sources */,
 				CEE73B7825D43DAC0035C9F1 /* Constants.swift in Sources */,
+				CE25476125D6BF930095E90A /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

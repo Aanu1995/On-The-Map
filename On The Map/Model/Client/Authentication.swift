@@ -13,7 +13,7 @@ struct Authentication {
     // MARK: Properties
     
     let loginManager = LoginManager()
-    static var sessionId: String = ""
+    static var session: GETSession?
     
     
     enum EndPoints {
@@ -61,7 +61,7 @@ struct Authentication {
             do {
 
                 let result = try decoder.decode(GETSession.self, from: newData)
-                Authentication.sessionId = result.session.sessionId
+                Authentication.session = result
                 
                 DispatchQueue.main.async {
                     completionHandler(result, nil)
@@ -149,7 +149,7 @@ struct Authentication {
                     completionHandler(nil, error)
                 }
             }
-            
+            print(result)
             DispatchQueue.main.async {
                completionHandler(result, error)
             }
@@ -163,13 +163,13 @@ struct Authentication {
             return completionHandler(nil)
         }
         
-        if(!Authentication.sessionId.isEmpty){
+        if let _ = Authentication.session {
             deleteSession { (error) in
                 DispatchQueue.main.async {
                     if let error = error {
                       return completionHandler(error)
                     }
-                    Authentication.sessionId = ""
+                    Authentication.session = nil
                     completionHandler(nil)
                 }
             }

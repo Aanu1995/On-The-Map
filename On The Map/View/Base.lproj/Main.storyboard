@@ -255,7 +255,7 @@
             </objects>
             <point key="canvasLocation" x="4072" y="29"/>
         </scene>
-        <!--Add Location-->
+        <!--Information Posting View Controller-->
         <scene sceneID="rLU-j6-DfM">
             <objects>
                 <viewController id="dUr-rx-4HH" customClass="InformationPostingViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
@@ -279,6 +279,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="dUr-rx-4HH" id="Lwg-lp-DJr"/>
+                                                </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="https://linkedln.com/enter-your-link" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FVR-n5-6Po">
                                                 <rect key="frame" x="0.0" y="48" width="382" height="40"/>
@@ -287,6 +290,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="dUr-rx-4HH" id="Tec-Qm-fPA"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hso-87-PTs">
                                                 <rect key="frame" x="0.0" y="96" width="382" height="40"/>
@@ -317,6 +323,9 @@
                                     <outlet property="delegate" destination="dUr-rx-4HH" id="X9y-HP-nR7"/>
                                 </connections>
                             </mapView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="WHV-k1-94H" userLabel="Loading Activity Indicator">
+                                <rect key="frame" x="197" y="394" width="20" height="20"/>
+                            </activityIndicatorView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfD-TY-c6u">
                                 <rect key="frame" x="16" y="718" width="382" height="40"/>
                                 <color key="backgroundColor" systemColor="systemTealColor"/>
@@ -344,18 +353,24 @@
                             <constraint firstItem="z0V-8B-1Ry" firstAttribute="trailing" secondItem="qfD-TY-c6u" secondAttribute="trailing" constant="16" id="8Pg-JG-h9h"/>
                             <constraint firstItem="VJJ-p3-h1M" firstAttribute="top" secondItem="z0V-8B-1Ry" secondAttribute="top" id="8l1-cm-Z0y"/>
                             <constraint firstItem="z0V-8B-1Ry" firstAttribute="trailing" secondItem="m8B-t2-qrV" secondAttribute="trailing" constant="16" id="DXl-p2-300"/>
+                            <constraint firstItem="WHV-k1-94H" firstAttribute="top" secondItem="m8B-t2-qrV" secondAttribute="bottom" constant="41" id="NVk-uC-akC"/>
                             <constraint firstItem="m8B-t2-qrV" firstAttribute="leading" secondItem="z0V-8B-1Ry" secondAttribute="leading" constant="16" id="Y6x-uZ-Ndg"/>
                             <constraint firstItem="VJJ-p3-h1M" firstAttribute="bottom" secondItem="z0V-8B-1Ry" secondAttribute="bottom" id="aEm-Ua-7lp"/>
                             <constraint firstItem="z0V-8B-1Ry" firstAttribute="bottom" secondItem="qfD-TY-c6u" secondAttribute="bottom" constant="16" id="iUE-VK-6gJ"/>
                             <constraint firstItem="VJJ-p3-h1M" firstAttribute="trailing" secondItem="z0V-8B-1Ry" secondAttribute="trailing" id="n9h-eu-9cF"/>
                             <constraint firstItem="qfD-TY-c6u" firstAttribute="leading" secondItem="z0V-8B-1Ry" secondAttribute="leading" constant="16" id="plk-SY-VQf"/>
                             <constraint firstItem="m8B-t2-qrV" firstAttribute="top" secondItem="z0V-8B-1Ry" secondAttribute="top" constant="100" id="qXZ-54-Ri0"/>
+                            <constraint firstItem="WHV-k1-94H" firstAttribute="centerX" secondItem="z0V-8B-1Ry" secondAttribute="centerX" id="s8d-AI-9PS"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Location" id="VZr-bd-dxf"/>
+                    <navigationItem key="navigationItem" id="VZr-bd-dxf"/>
                     <connections>
+                        <outlet property="findLocationButton" destination="Hso-87-PTs" id="bvt-ge-nNT"/>
                         <outlet property="finishButton" destination="qfD-TY-c6u" id="dYx-Df-ziN"/>
                         <outlet property="infoMapView" destination="VJJ-p3-h1M" id="Uhe-8f-EhM"/>
+                        <outlet property="loadingIndicator" destination="WHV-k1-94H" id="oK3-5Y-zSC"/>
+                        <outlet property="locationTextField" destination="cQn-bF-nVQ" id="9vh-EW-1Pl"/>
+                        <outlet property="urlTextField" destination="FVR-n5-6Po" id="Vbi-Km-FtI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W8m-bd-8ng" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

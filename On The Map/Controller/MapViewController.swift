@@ -18,10 +18,10 @@ class MapViewController: UIViewController, HelperFunction{
     // MARK: Properties
 
     let authService = Authentication()
-    let studentLocationService = StudentLocationClient()
+    let studentInfoService = StudentInformationClient()
     var studentInfoList: [InformationModel] = []
     
-    var currentMediaURL: String = ""
+    var currentMediaURL: String? = ""
     
     
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ class MapViewController: UIViewController, HelperFunction{
         // notification observer update data when called
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
         
-        studentLocationService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
         
         configureNavBar(navigationItem: self.navigationItem, logoutSelector: #selector(self.logout), locationSelector: #selector(self.addLocation), refreshSelector: #selector(self.refresh))
         
@@ -49,16 +49,22 @@ class MapViewController: UIViewController, HelperFunction{
     
     @objc private func updateData() {
         studentInfoList = StudentInformation.studentLocationList
+        
+        // removed all the current annotations
+        let currentAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(currentAnnotations)
+        
+        var annotaions = [MKPointAnnotation]()
+        
         for info in studentInfoList {
             let annotation = MKPointAnnotation()
             annotation.title = "\(info.firstName) \(info.lastName)"
             annotation.subtitle = info.mediaURL
             annotation.coordinate = CLLocationCoordinate2D(latitude: info.latitude, longitude: info.longitude)
             
-            mapView.addAnnotation(annotation)
+            annotaions.append(annotation)
         }
-        print("reloaded")
-        mapView.reloadInputViews()
+        self.mapView.addAnnotations(annotaions)
     }
     
     @objc private func addLocation() {
@@ -76,7 +82,7 @@ class MapViewController: UIViewController, HelperFunction{
     
     @objc private func refresh() {
         refreshIndicator.startAnimating()
-        studentLocationService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
     private func fetchingData(_ isFetching: Bool){
@@ -97,17 +103,17 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is MKPointAnnotation else { return nil }
 
-        let identifier = "Annotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        let identifier = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            pinView?.canShowCallout = true
         } else {
-            annotationView?.annotation = annotation
+            pinView?.annotation = annotation
         }
         
-        return annotationView
+        return pinView
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -117,7 +123,9 @@ extension MapViewController: MKMapViewDelegate {
     }
     
     @objc private func onCalloutTapped() {
-        let url = URL(string: currentMediaURL.replacingOccurrences(of: " ", with: "%20"))!
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if let currentMediaURL = currentMediaURL {
+            let url = URL(string: currentMediaURL.replacingOccurrences(of: " ", with: "%20"))!
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }

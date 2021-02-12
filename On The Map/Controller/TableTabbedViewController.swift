@@ -14,7 +14,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     // MARK: Properties
     
     let authService = Authentication()
-    let studentLocationService = StudentLocationClient()
+    let studentInfoService = StudentInformationClient()
     
     var studentInfoList: [InformationModel] = []
     
@@ -66,7 +66,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     }
     
     @objc private func refresh() {
-        studentLocationService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
     private func configureRefreshIndicator(){

@@ -11,5 +11,7 @@ enum ErrorMessage: String {
     
     case emailError = "Please enter a valid email address"
     case passwordError = "Password field can not be empty"
+    case locationError = "Please enter a valid location"
+    case linkError = "Please enter a valid link"
 }
 

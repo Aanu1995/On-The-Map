@@ -82,7 +82,6 @@ class LoginViewController: UIViewController, HelperFunction {
         }
         emailTextField.text = ""
         passwordTextField.text = ""
-        print(Authentication.sessionId)
         self.performSegue(withIdentifier: "homeScreen", sender: nil)
     }
 

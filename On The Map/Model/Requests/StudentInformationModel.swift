@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct StudentInformationModel: Codable {
+struct StudentInformationModel: Decodable {
     let results: [InformationModel]
 }
 
-struct InformationModel: Codable {
+struct InformationModel: Decodable {
     let firstName: String
     let lastName: String
     let longitude: Double
@@ -25,5 +25,15 @@ struct InformationModel: Codable {
     let updatedAt: String
     let uniqueKey: String
     let objectId: String
+}
+
+struct StudentLocation: Encodable {
+    let firstName: String
+    let lastName: String
+    let longitude: Double
+    let latitude: Double
+    let mediaURL: String
+    let mapString: String
+    let uniqueKey: String
 }
 

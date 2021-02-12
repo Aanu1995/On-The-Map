@@ -8,7 +8,12 @@
 import Foundation
 
 struct GETSession: Decodable {
+    let account: Account
     let session: Session
+    
+    struct Account: Decodable {
+        let key: String
+    }
     
     struct Session: Decodable {
         let sessionId: String
