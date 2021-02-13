@@ -9,7 +9,7 @@ import Foundation
 
 class ServerRequest {
     
-    class func taskForGetRequest<ResponseType: Decodable> (url:URL, responseType: ResponseType.Type, completionHandler: @escaping (ResponseType?, Error?) -> Void) -> URLSessionTask{
+    class func taskForGetRequest (url:URL, completionHandler: @escaping (Data?, Error?) -> Void){
     
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
@@ -20,25 +20,15 @@ class ServerRequest {
                 return
             }
             
-            let decoder = JSONDecoder()
-            
-            do {
-                let  token = try decoder.decode(ResponseType.self, from: data)
-                DispatchQueue.main.async {
-                    completionHandler(token, nil)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+            DispatchQueue.main.async {
+                completionHandler(data, nil)
             }
         }
         task.resume()
-        return task
     }
     
     
-    class func taskForPostRequest<ResponseType: Decodable, RequestType: Encodable>(url: URL, responseType: ResponseType.Type, body: RequestType, completionHandler: @escaping (ResponseType?, Error?)->Void){
+    class func taskForPostRequest<RequestType: Encodable>(url: URL, body: RequestType, completionHandler: @escaping (Data?, Error?)->Void){
         
         var request = URLRequest(url:url)
         
@@ -55,19 +45,8 @@ class ServerRequest {
                 return
             }
             
-            let decoder = JSONDecoder()
-            
-            do{
-                let jsonObject = try decoder.decode(ResponseType.self, from: data)
-                
-                DispatchQueue.main.async {
-                    completionHandler(jsonObject, nil)
-                }
-            }
-            catch {
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+            DispatchQueue.main.async {
+                completionHandler(data, nil)
             }
         }
         

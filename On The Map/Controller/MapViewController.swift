@@ -11,6 +11,7 @@ import MapKit
 class MapViewController: UIViewController, HelperFunction{
     
     // MARK: IBOutlets
+    
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
     @IBOutlet weak var mapView: MKMapView!
@@ -20,7 +21,6 @@ class MapViewController: UIViewController, HelperFunction{
     let authService = Authentication()
     let studentInfoService = StudentInformationClient()
     var studentInfoList: [InformationModel] = []
-    
     var currentMediaURL: String? = ""
     
     

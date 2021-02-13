@@ -39,47 +39,35 @@ struct Authentication {
     
     
     func login (username: String, password: String, completionHandler: @escaping (Any?, Error?)-> Void){
-        var request = URLRequest(url: EndPoints.getSession.url)
+        let url = EndPoints.getSession.url
         let body = PostSession(udacity: PostSession.Udacity(username: username, password: password))
         
-        request.httpMethod = "POST"
-        request.httpBody = try! JSONEncoder().encode(body)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        ServerRequest.taskForPostRequest(url: url, body: body) { (data, error) in
             guard let data = data else {
-                return DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+                return completionHandler(nil, error)
             }
             
             let decoder = JSONDecoder()
             
             let range = 5..<data.count
-            let newData = data.subdata(in: range) /* subset response data! */
+            let newData = data.subdata(in: range)
             
             do {
-
                 let result = try decoder.decode(GETSession.self, from: newData)
                 Authentication.session = result
+                completionHandler(result, nil)
                 
-                DispatchQueue.main.async {
-                    completionHandler(result, nil)
-                }
             } catch {
                 do {
                     let errorResponse = try decoder.decode(OnTheMapError.self, from: newData)
-                    DispatchQueue.main.async {
-                        completionHandler(nil, errorResponse)
-                    }
+                    completionHandler(nil, errorResponse)
                 }catch {
-                    DispatchQueue.main.async {
-                        completionHandler(nil, error)
-                    }
+                    completionHandler(nil, error)
                 }
             }
+            
         }
-        task.resume()
+        
     }
     
     func deleteSession(completionHandler: @escaping (Error?) -> Void) {
@@ -100,7 +88,6 @@ struct Authentication {
           guard let _ = data else {
               return completionHandler(error)
           }
-            
             completionHandler(nil)
         }
         task.resume()

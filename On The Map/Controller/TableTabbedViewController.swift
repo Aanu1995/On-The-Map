@@ -8,14 +8,15 @@
 import UIKit
 
 class TableTabbedViewController: UIViewController, HelperFunction {
-
+    
+    // MARK: Outlets
+    
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Properties
     
     let authService = Authentication()
     let studentInfoService = StudentInformationClient()
-    
     var studentInfoList: [InformationModel] = []
     
     

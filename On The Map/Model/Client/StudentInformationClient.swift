@@ -11,7 +11,8 @@ class StudentInformationClient {
     
     enum EndPoints {
         
-        static let studentLocationLink = "https://onthemap-api.udacity.com/v1/StudentLocation"
+        static let base = "https://onthemap-api.udacity.com/v1/StudentLocation"
+        static let userBase = "https://onthemap-api.udacity.com/v1/users/"
         
         case getStudentLocation
         case postStudentLocation
@@ -19,9 +20,9 @@ class StudentInformationClient {
         
         var stringValue: String {
             switch self {
-            case .getStudentLocation: return EndPoints.studentLocationLink + "?order=-updatedAt"
-            case .postStudentLocation: return EndPoints.studentLocationLink
-            case .getPublicUser: return "https://onthemap-api.udacity.com/v1/users/\(Authentication.session!.account.key)"
+            case .getStudentLocation: return EndPoints.base + "?order=-updatedAt"
+            case .postStudentLocation: return EndPoints.base
+            case .getPublicUser: return EndPoints.userBase + Authentication.session!.account.key
             }
         }
         
@@ -34,73 +35,56 @@ class StudentInformationClient {
     func  getAllStudentLocation(completionHandler: @escaping ([InformationModel], Error?) -> Void){
         let url = EndPoints.getStudentLocation.url
         
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
+        ServerRequest.taskForGetRequest(url: url) { (data, error) in
             guard let data = data else {
-                DispatchQueue.main.async {
-                    completionHandler(StudentInformation.studentLocationList, error)
-                }
-                return
+                return completionHandler(StudentInformation.studentLocationList, error)
             }
             
             let decoder = JSONDecoder()
             
             do {
-                print(String(data: data, encoding: .utf8)!)
                 let studentsInfo = try decoder.decode(StudentInformationModel.self, from: data)
                 // setting error to nil
                 StudentInformation.studentLocationList = studentsInfo.results
-                DispatchQueue.main.async {
-                    completionHandler(StudentInformation.studentLocationList, nil)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
-                }
+                completionHandler(StudentInformation.studentLocationList, nil)
+                // required to update the Map and Tabbed View
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
                 
             } catch {
-                DispatchQueue.main.async {
-                    completionHandler(StudentInformation.studentLocationList, error)
-                }
+                completionHandler(StudentInformation.studentLocationList, error)
             }
         }
-        
-        task.resume()
     }
     
     func postStudentLocation(studentLocation: StudentLocation, completionHandler: @escaping (Error?) -> Void){
         let url = EndPoints.postStudentLocation.url
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = try! JSONEncoder().encode(studentLocation)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        ServerRequest.taskForPostRequest(url: url, body: studentLocation) { (data, error) in
             guard let _ = data else {
-                DispatchQueue.main.async {
-                    completionHandler(error)
-                }
-                return
+                return completionHandler(error)
             }
+            
             // once the user location has been posted, I need to get the recent student location
             self.getAllStudentLocation { (data, error) in
-                DispatchQueue.main.async {
-                    completionHandler(nil)
-                }
+               completionHandler(nil)
             }
         }
-        task.resume()
+        
     }
     
     func getUserData(completionHandler: @escaping (User?, Error?) -> Void){
         
+        // if session is nil, then facebook is used to login in
+        guard let _ = Authentication.session else {
+            let user = User(firstName: "Johnny", lastName: "Snow", uniqueKey: "")
+            return completionHandler(user, nil)
+        }
+        
         let url = EndPoints.getPublicUser.url
         
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            
+        ServerRequest.taskForGetRequest(url: url) { (data, error) in
             guard let data = data else {
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
-                return
+                return  completionHandler(nil, error)
             }
             
             let decoder = JSONDecoder()
@@ -110,19 +94,13 @@ class StudentInformationClient {
             
             do {
                 let user = try decoder.decode(User.self, from: newData)
-            
-                DispatchQueue.main.async {
-                    completionHandler(user, nil)
-                }
+                completionHandler(user, nil)
                 
             } catch {
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+                completionHandler(nil, error)
             }
         }
-        
-        task.resume()
+       
     }
 }
 
