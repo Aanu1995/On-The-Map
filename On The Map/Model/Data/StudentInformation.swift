@@ -8,5 +8,11 @@
 import Foundation
 
 class StudentInformation {
-    static var studentLocationList: [InformationModel] = []
+    
+    static let shared = StudentInformation()
+    
+    private init(){}
+    
+    var studentInfoList: [InformationModel] = []
+    
 }

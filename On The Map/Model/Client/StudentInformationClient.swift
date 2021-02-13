@@ -20,7 +20,7 @@ class StudentInformationClient {
         
         var stringValue: String {
             switch self {
-            case .getStudentLocation: return EndPoints.base + "?order=-updatedAt"
+            case .getStudentLocation: return EndPoints.base + "?order=-updatedAt&limit=100"
             case .postStudentLocation: return EndPoints.base
             case .getPublicUser: return EndPoints.userBase + Authentication.session!.account.key
             }
@@ -37,7 +37,7 @@ class StudentInformationClient {
         
         ServerRequest.taskForGetRequest(url: url) { (data, error) in
             guard let data = data else {
-                return completionHandler(StudentInformation.studentLocationList, error)
+                return completionHandler(StudentInformation.shared.studentInfoList, error)
             }
             
             let decoder = JSONDecoder()
@@ -45,13 +45,13 @@ class StudentInformationClient {
             do {
                 let studentsInfo = try decoder.decode(StudentInformationModel.self, from: data)
                 // setting error to nil
-                StudentInformation.studentLocationList = studentsInfo.results
-                completionHandler(StudentInformation.studentLocationList, nil)
+                StudentInformation.shared.studentInfoList = studentsInfo.results
+                completionHandler(StudentInformation.shared.studentInfoList, nil)
                 // required to update the Map and Tabbed View
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
                 
             } catch {
-                completionHandler(StudentInformation.studentLocationList, error)
+                completionHandler(StudentInformation.shared.studentInfoList, error)
             }
         }
     }

@@ -48,7 +48,7 @@ class MapViewController: UIViewController, HelperFunction{
     }
     
     @objc private func updateData() {
-        studentInfoList = StudentInformation.studentLocationList
+        studentInfoList = StudentInformation.shared.studentInfoList
         
         // removed all the current annotations
         let currentAnnotations = self.mapView.annotations

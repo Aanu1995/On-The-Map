@@ -32,7 +32,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
         
         self.tableView.register(TabbedTableViewCell.nib(), forCellReuseIdentifier: TabbedTableViewCell.identifier)
         
-        studentInfoList = StudentInformation.studentLocationList
+        studentInfoList = StudentInformation.shared.studentInfoList
     }
     
     deinit {
@@ -49,7 +49,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     }
     
     @objc private func updateData() {
-        studentInfoList = StudentInformation.studentLocationList
+        studentInfoList = StudentInformation.shared.studentInfoList
         tableView.reloadData()
     }
     
