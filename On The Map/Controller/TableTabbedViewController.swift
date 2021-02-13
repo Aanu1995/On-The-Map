@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 class TableTabbedViewController: UIViewController, HelperFunction {
     
@@ -15,13 +16,16 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     
     // MARK: Properties
     
-    let authService = Authentication()
-    let studentInfoService = StudentInformationClient()
+    private var authService: AuthService!
+    let infoService: InfoService = InfoServiceImpl()
     var studentInfoList: [InformationModel] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // implementation
+        let loginManager = LoginManager()
+        authService = AuthServiceImpl(loginManager: loginManager)
         
         configureNavBar(navigationItem: self.navigationItem, logoutSelector: #selector(self.logout), locationSelector: #selector(self.addLocation), refreshSelector: #selector(self.refresh))
         
@@ -32,7 +36,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
         
         self.tableView.register(TabbedTableViewCell.nib(), forCellReuseIdentifier: TabbedTableViewCell.identifier)
         
-        studentInfoList = StudentInformation.shared.studentInfoList
+        studentInfoList = InfoData.shared.studentInfoList
     }
     
     deinit {
@@ -49,7 +53,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     }
     
     @objc private func updateData() {
-        studentInfoList = StudentInformation.shared.studentInfoList
+        studentInfoList = InfoData.shared.studentInfoList
         tableView.reloadData()
     }
     
@@ -67,7 +71,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     }
     
     @objc private func refresh() {
-        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        infoService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
     private func configureRefreshIndicator(){

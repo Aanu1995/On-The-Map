@@ -7,11 +7,15 @@
 
 import Foundation
 
-class StudentInformationClient {
+protocol InfoService {
+    func getAllStudentLocation(completionHandler: @escaping ([InformationModel], Error?) -> Void)
+    func postStudentLocation(studentLocation: StudentLocation, completionHandler: @escaping (Error?) -> Void)
+    func getUserData(completionHandler: @escaping (User?, Error?) -> Void)
+}
+
+class InfoServiceImpl: InfoService {
     
     enum EndPoints {
-        
-        
         
         case getStudentLocation
         case postStudentLocation
@@ -24,7 +28,7 @@ class StudentInformationClient {
             switch self {
             case .getStudentLocation: return baseUrl + "?order=-updatedAt&limit=100"
             case .postStudentLocation: return baseUrl
-            case .getPublicUser: return userBaseUrl + Authentication.session!.account.key
+            case .getPublicUser: return userBaseUrl + InfoData.shared.session!.account.key
             }
         }
         
@@ -37,9 +41,9 @@ class StudentInformationClient {
     func  getAllStudentLocation(completionHandler: @escaping ([InformationModel], Error?) -> Void){
         let url = EndPoints.getStudentLocation.url
         
-        ServerRequest.taskForGetRequest(url: url) { (data, error) in
+        taskForGetRequest(url: url) { (data, error) in
             guard let data = data else {
-                return completionHandler(StudentInformation.shared.studentInfoList, error)
+                return completionHandler(InfoData.shared.studentInfoList, error)
             }
             
             let decoder = JSONDecoder()
@@ -47,13 +51,13 @@ class StudentInformationClient {
             do {
                 let studentsInfo = try decoder.decode(StudentInformationModel.self, from: data)
                 // setting error to nil
-                StudentInformation.shared.studentInfoList = studentsInfo.results
-                completionHandler(StudentInformation.shared.studentInfoList, nil)
+                InfoData.shared.studentInfoList = studentsInfo.results
+                completionHandler(InfoData.shared.studentInfoList, nil)
                 // required to update the Map and Tabbed View
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notification.FetchNotifierIdentifier), object: nil)
                 
             } catch {
-                completionHandler(StudentInformation.shared.studentInfoList, error)
+                completionHandler(InfoData.shared.studentInfoList, error)
             }
         }
     }
@@ -61,7 +65,7 @@ class StudentInformationClient {
     func postStudentLocation(studentLocation: StudentLocation, completionHandler: @escaping (Error?) -> Void){
         let url = EndPoints.postStudentLocation.url
         
-        ServerRequest.taskForPostRequest(url: url, body: studentLocation) { (data, error) in
+       taskForPostRequest(url: url, body: studentLocation) { (data, error) in
             guard let _ = data else {
                 return completionHandler(error)
             }
@@ -77,14 +81,14 @@ class StudentInformationClient {
     func getUserData(completionHandler: @escaping (User?, Error?) -> Void){
         
         // if session is nil, then facebook is used to login in
-        guard let _ = Authentication.session else {
+        guard let _ = InfoData.shared.session else {
             let user = User(firstName: "Johnny", lastName: "Snow", uniqueKey: "")
             return completionHandler(user, nil)
         }
         
         let url = EndPoints.getPublicUser.url
         
-        ServerRequest.taskForGetRequest(url: url) { (data, error) in
+      taskForGetRequest(url: url) { (data, error) in
             guard let data = data else {
                 return  completionHandler(nil, error)
             }

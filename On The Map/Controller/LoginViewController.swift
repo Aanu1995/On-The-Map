@@ -21,18 +21,21 @@ class LoginViewController: UIViewController, HelperFunction {
     
     // Mark: Properties
     
-    let authService = Authentication()
-   
+    private var authService: AuthService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // implementation
+        let loginManager = LoginManager()
+        authService = AuthServiceImpl(loginManager: loginManager)
+        
         self.loggingIn(true)
         authService.getFaceBookData(completionHandler: navigateToHomeScreen)
     }
     
 
     @IBAction func signUp(_ sender: Any) {
-        let url: URL = Authentication.EndPoints.signUp.url
+        let url: URL = AuthServiceImpl.EndPoints.signUp.url
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     

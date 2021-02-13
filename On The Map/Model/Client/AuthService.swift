@@ -8,14 +8,23 @@
 import Foundation
 import FBSDKLoginKit
 
+protocol AuthService {
+    
+    func login (username: String, password: String, completionHandler: @escaping (Any?, Error?)-> Void)
+    func deleteSession(completionHandler: @escaping (Error?) -> Void)
+    func facebookAuthentication(viewController: UIViewController, completionHandler: @escaping (Any?, Error?) -> Void)
+    func logout(completionHandler: @escaping (Error?) -> Void)
+    func getFaceBookData(completionHandler: @escaping (Any?, Error?) -> Void)
+}
 
-struct Authentication {
+
+class AuthServiceImpl: AuthService {
     
-    // MARK: Properties
+    private let loginManager: LoginManager
     
-    let loginManager = LoginManager()
-    static var session: GETSession?
-    
+    init(loginManager: LoginManager) {
+        self.loginManager = loginManager
+    }
     
     enum EndPoints {
         
@@ -40,7 +49,7 @@ struct Authentication {
         let url = EndPoints.getSession.url
         let body = PostSession(udacity: PostSession.Udacity(username: username, password: password))
         
-        ServerRequest.taskForPostRequest(url: url, body: body) { (data, error) in
+        taskForPostRequest(url: url, body: body) { (data, error) in
             guard let data = data else {
                 return completionHandler(nil, error)
             }
@@ -52,7 +61,7 @@ struct Authentication {
             
             do {
                 let result = try decoder.decode(GETSession.self, from: newData)
-                Authentication.session = result
+                InfoData.shared.session = result
                 completionHandler(result, nil)
                 
             } catch {
@@ -101,7 +110,7 @@ struct Authentication {
             case .failed(let error):
                 completionHandler(nil, error)
             case .success(granted: _, declined: _, token: _):
-                getFaceBookData { (result, error) in
+                self.getFaceBookData { (result, error) in
                     guard let result = result else {
                        return completionHandler(nil, error)
                     }
@@ -111,7 +120,7 @@ struct Authentication {
         }
     }
     
-    func getFaceBookData(completionHandler: @escaping (Any?, Error?) -> Void){
+    func getFaceBookData(completionHandler: @escaping (Any?, Error?) -> Void) {
         if let token = AccessToken.current, !token.isExpired {
              let accessToken = token.tokenString
             getParameter(token: accessToken) { (result, error) in
@@ -142,19 +151,19 @@ struct Authentication {
     }
     
     
-    func logout(completionHandler: @escaping (Error?) -> Void){
+    func logout(completionHandler: @escaping (Error?) -> Void) {
         if let _ = AccessToken.current {
             loginManager.logOut()
             return completionHandler(nil)
         }
         
-        if let _ = Authentication.session {
+        if let _ = InfoData.shared.session {
             deleteSession { (error) in
                 DispatchQueue.main.async {
                     if let error = error {
                       return completionHandler(error)
                     }
-                    Authentication.session = nil
+                    InfoData.shared.session = nil
                     completionHandler(nil)
                 }
             }

@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import FBSDKLoginKit
 
 class MapViewController: UIViewController, HelperFunction{
     
@@ -18,19 +19,22 @@ class MapViewController: UIViewController, HelperFunction{
     
     // MARK: Properties
 
-    let authService = Authentication()
-    let studentInfoService = StudentInformationClient()
+    private var authService: AuthService!
+    let infoService: InfoService = InfoServiceImpl()
     var studentInfoList: [InformationModel] = []
     var currentMediaURL: String? = ""
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // implementation
+        let loginManager = LoginManager()
+        authService = AuthServiceImpl(loginManager: loginManager)
         
         // notification observer update data when called
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.Notification.FetchNotifierIdentifier), object: nil)
         
-        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        infoService.getAllStudentLocation(completionHandler: updateStudentLocation)
         
         configureNavBar(navigationItem: self.navigationItem, logoutSelector: #selector(self.logout), locationSelector: #selector(self.addLocation), refreshSelector: #selector(self.refresh))
         
@@ -48,7 +52,7 @@ class MapViewController: UIViewController, HelperFunction{
     }
     
     @objc private func updateData() {
-        studentInfoList = StudentInformation.shared.studentInfoList
+        studentInfoList = InfoData.shared.studentInfoList
         
         // removed all the current annotations
         let currentAnnotations = self.mapView.annotations
@@ -82,7 +86,7 @@ class MapViewController: UIViewController, HelperFunction{
     
     @objc private func refresh() {
         refreshIndicator.startAnimating()
-        studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
+        infoService.getAllStudentLocation(completionHandler: updateStudentLocation)
     }
     
     private func fetchingData(_ isFetching: Bool){

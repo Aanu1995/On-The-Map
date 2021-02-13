@@ -7,9 +7,9 @@
 
 import Foundation
 
-class ServerRequest {
+
     
-    class func taskForGetRequest (url:URL, completionHandler: @escaping (Data?, Error?) -> Void){
+func taskForGetRequest (url:URL, completionHandler: @escaping (Data?, Error?) -> Void){
     
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
@@ -28,7 +28,7 @@ class ServerRequest {
     }
     
     
-    class func taskForPostRequest<RequestType: Encodable>(url: URL, body: RequestType, completionHandler: @escaping (Data?, Error?)->Void){
+func taskForPostRequest<RequestType: Encodable>(url: URL, body: RequestType, completionHandler: @escaping (Data?, Error?)->Void){
         
         var request = URLRequest(url:url)
         
@@ -52,4 +52,4 @@ class ServerRequest {
         
         task.resume()
     }
-}
+

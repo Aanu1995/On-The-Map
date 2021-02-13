@@ -7,12 +7,12 @@
 
 import Foundation
 
-class StudentInformation {
+class InfoData {
     
-    static let shared = StudentInformation()
+    static let shared = InfoData()
     
     private init(){}
     
     var studentInfoList: [InformationModel] = []
-    
+    var session: GETSession?
 }

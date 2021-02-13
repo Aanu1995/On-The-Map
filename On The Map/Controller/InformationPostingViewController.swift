@@ -21,7 +21,7 @@ class InformationPostingViewController: UIViewController, HelperFunction {
     
     // MARK: Properties
     
-    let studentInfoService = StudentInformationClient()
+    let infoService: InfoService = InfoServiceImpl()
     private var locationCoord: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
@@ -88,7 +88,7 @@ class InformationPostingViewController: UIViewController, HelperFunction {
     @IBAction func finish(_ sender: Any) {
         isLoading(true)
         // get the public user data and post location
-        studentInfoService.getUserData(completionHandler: onUserdataAvailable)
+        infoService.getUserData(completionHandler: onUserdataAvailable)
     }
     
     private func onLocationSearchAvailable(response: MKLocalSearch.Response?, error: Error?){
@@ -122,7 +122,7 @@ class InformationPostingViewController: UIViewController, HelperFunction {
             // student location object
             let studentLocation = StudentLocation(firstName:user.firstName, lastName: user.lastName, longitude: locationCoord!.longitude, latitude: locationCoord!.latitude, mediaURL: urlTextField.text!, mapString: locationTextField.text!, uniqueKey: user.uniqueKey)
             
-            studentInfoService.postStudentLocation(studentLocation: studentLocation, completionHandler: onLocationPostFeedback)
+            infoService.postStudentLocation(studentLocation: studentLocation, completionHandler: onLocationPostFeedback)
         }
     }
     
