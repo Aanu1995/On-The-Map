@@ -8,6 +8,7 @@
 import Foundation
 import FBSDKLoginKit
 
+
 struct Authentication {
     
     // MARK: Properties
@@ -18,17 +19,14 @@ struct Authentication {
     
     enum EndPoints {
         
-        static let sessionLink = "https://onthemap-api.udacity.com/v1/session"
-        static let signUpLink = "https://auth.udacity.com/sign-up"
-        
         case getSession
         case deleteSession
         case signUp
         
         var stringValue: String {
             switch self {
-            case .getSession, .deleteSession : return EndPoints.sessionLink
-            case .signUp: return EndPoints.signUpLink
+            case .getSession, .deleteSession : return Constants.UdacityApi.SessionUrl
+            case .signUp: return Constants.UdacityApi.SignUpUrl
             }
         }
         

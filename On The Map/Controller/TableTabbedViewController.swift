@@ -28,7 +28,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
         configureRefreshIndicator()
         
         // notification observer update data when called
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.Notification.FetchNotifierIdentifier), object: nil)
         
         self.tableView.register(TabbedTableViewCell.nib(), forCellReuseIdentifier: TabbedTableViewCell.identifier)
         
@@ -54,7 +54,7 @@ class TableTabbedViewController: UIViewController, HelperFunction {
     }
     
     @objc private func addLocation() {
-        performSegue(withIdentifier: Constants.infoPostingScreen, sender: nil)
+        performSegue(withIdentifier: Constants.SegueIdentifier.InfoPostingScreen, sender: nil)
     }
     
     @objc private func logout() {

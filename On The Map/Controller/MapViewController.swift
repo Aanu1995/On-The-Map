@@ -28,7 +28,7 @@ class MapViewController: UIViewController, HelperFunction{
         super.viewDidLoad()
         
         // notification observer update data when called
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateData), name: NSNotification.Name(rawValue: Constants.Notification.FetchNotifierIdentifier), object: nil)
         
         studentInfoService.getAllStudentLocation(completionHandler: updateStudentLocation)
         
@@ -68,7 +68,7 @@ class MapViewController: UIViewController, HelperFunction{
     }
     
     @objc private func addLocation() {
-        performSegue(withIdentifier: Constants.infoPostingScreen, sender: nil)
+        performSegue(withIdentifier: Constants.SegueIdentifier.InfoPostingScreen, sender: nil)
     }
     
     @objc private func logout() {

@@ -71,7 +71,7 @@ class InformationPostingViewController: UIViewController, HelperFunction {
         if(location.isEmpty){
             return present(errorMessageDisplay(title: "Error", message: .locationError), animated: true)
         }
-        else if (!Validation.isValidURL(link)){
+        else if (!isValidURL(link)){
            return present(errorMessageDisplay(title: "Error", message: .linkError), animated: true)
         }
 

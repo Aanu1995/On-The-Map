@@ -41,7 +41,7 @@ class LoginViewController: UIViewController, HelperFunction {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
        
-        let isvalidEmail = Validation.isValidEmail(email)
+        let isvalidEmail = isValidEmail(email)
         
         if(!isvalidEmail){
             return present(errorMessageDisplay(title: "Email Error", message: .emailError), animated: true)

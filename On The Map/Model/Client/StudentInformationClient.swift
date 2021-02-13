@@ -11,18 +11,20 @@ class StudentInformationClient {
     
     enum EndPoints {
         
-        static let base = "https://onthemap-api.udacity.com/v1/StudentLocation"
-        static let userBase = "https://onthemap-api.udacity.com/v1/users/"
+        
         
         case getStudentLocation
         case postStudentLocation
         case getPublicUser
         
         var stringValue: String {
+            let baseUrl = Constants.UdacityApi.BaseUrl
+            let userBaseUrl = Constants.UdacityApi.UserBaseUrl
+            
             switch self {
-            case .getStudentLocation: return EndPoints.base + "?order=-updatedAt&limit=100"
-            case .postStudentLocation: return EndPoints.base
-            case .getPublicUser: return EndPoints.userBase + Authentication.session!.account.key
+            case .getStudentLocation: return baseUrl + "?order=-updatedAt&limit=100"
+            case .postStudentLocation: return baseUrl
+            case .getPublicUser: return userBaseUrl + Authentication.session!.account.key
             }
         }
         
@@ -48,7 +50,7 @@ class StudentInformationClient {
                 StudentInformation.shared.studentInfoList = studentsInfo.results
                 completionHandler(StudentInformation.shared.studentInfoList, nil)
                 // required to update the Map and Tabbed View
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.fetchNotifierIdentifier), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.Notification.FetchNotifierIdentifier), object: nil)
                 
             } catch {
                 completionHandler(StudentInformation.shared.studentInfoList, error)
